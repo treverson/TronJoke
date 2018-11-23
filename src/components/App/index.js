@@ -125,60 +125,6 @@ class App extends React.Component {
             console.log('Detected new message:', result.id);
             this.fetchMessage(+result.id);
         });
-
-        /*Utils.contract.MessageTipped().watch((err, { result }) => {
-            if(err)
-                return console.error('Failed to bind event listener:', err);
-
-            console.log('Message was tipped:', result.id);
-            this.fetchMessage(+result.id);
-        });
-
-        Utils.contract.MessageAddedToTopPosts().watch((err, { result }) => {
-            if(err)
-                return console.error('Failed to bind event listener:', err);
-
-            console.log('Message was added to featured posts:', result.id);
-            this.fetchMessage(+result.id);
-
-            const {
-                recent,
-                featured
-            } = this.state.messages;
-
-            if(featured.includes(+result.id))
-                return;
-
-            this.setState({
-                messages: {
-                    recent: this.state.messages.recent,
-                    featured: [ ...featured, +result.id ]
-                }
-            });
-        });
-
-        Utils.contract.MessageRemovedFromTopPosts().watch((err, { result }) => {
-            if(err)
-                return console.error('Failed to bind event listener:', err);
-
-            console.log('Message was removed from featured posts:', result.id);
-            this.fetchMessage(+result.id);
-
-            const {
-                recent,
-                featured
-            } = this.state.messages;
-
-            if(!featured.includes(+result.id))
-                return;
-
-            this.setState({
-                messages: {
-                    recent: this.state.messages.recent,
-                    featured: featured.filter(messageID => messageID !== +result.id)
-                }
-            });
-        });*/
     }
 
     async fetchMessages() {
@@ -351,22 +297,17 @@ class App extends React.Component {
             <div className='kontainer'>
                 <div className='header white'>
                     <p>
-                        <strong>Tron Message Board</strong> is a DApp which allows you to post messages
-                        along with tipping others or receiving tips. There is no additional cost associated
-                        when tipping people, however you do have to pay network fees.<br/><br/>
-
-                        Want to build your own DApp? The code to this demo is available on&nbsp;
-                        <a href='https://github.com/TronWatch/TronLink-Demo-Messages/' target='_blank' rel='noopener noreferrer'>
-                            GitHub
-                        </a>.
+                        <strong>波场段子</strong> 是一个可以把你喜欢的段子发上来, 并获得打赏的网站。 每天的打赏第一名都将获得1000Trx奖励。
+                        <br/><br/>
+                        期待你的表演~
                     </p>
                 </div>
 
                 { this.renderMessageInput() }
 
                 <div className='header'>
-                    <h1>Featured</h1>
-                    <span>The top 20 messages, sorted by the total tips</span>
+                    <h1>排行榜</h1>
+                    <span>按打赏排序top20</span>
                 </div>
                 <Featured
                     recent={ recent }
@@ -376,8 +317,8 @@ class App extends React.Component {
                     onTip={ this.onMessageTip } />
 
                 <div className='header'>
-                    <h1>Recent</h1>
-                    <span>Click any message to send the user a tip</span>
+                    <h1>最新段子</h1>
+                    <span>点击帖子, 可以打赏</span>
                 </div>
                 <div className='messages'>
                     { messages }

@@ -24,11 +24,10 @@ const TronLinkGuide = props => {
         return (
             <div className='tronLink' onClick={ openTronLink }>
                 <div className='info'>
-                    <h1>TronLink Required</h1>
+                    <h1>需要安装TronLink</h1>
                     <p>
-                        To create a post or tip others you must install TronLink. TronLink is a TRON wallet for the browser
-                        that can be <a href={ WEBSTORE_URL } target='_blank' rel='noopener noreferrer'>installed from the Chrome Webstore</a>.
-                        Once installed, return back and refresh the page.
+                        要发帖或者点赞, 你必须安装TronLink. TronLink是一个浏览器波场钱包, 可以从<a href={ WEBSTORE_URL } target='_blank' rel='noopener noreferrer'>Chrome应用商店下载</a>.
+                        安装后, 需要刷新此页面.
                     </p>
                 </div>
                 { logo }
@@ -41,8 +40,7 @@ const TronLinkGuide = props => {
             <div className='info'>
                 <h1>Log in Required</h1>
                 <p>
-                    TronLink is installed but you must first log in. Open TronLink from the browser bar and set up your
-                    first wallet or decrypt a previously-created wallet.
+                    需要登录TronLink. 
                 </p>
             </div>
             { logo }
