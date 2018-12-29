@@ -25,7 +25,6 @@ const utils = {
 
     async fetchMessages(recent = {}, featured = []) {
         const test = await this.contract.messages(72).call();
-        alert(JSON.stringify(test));
         // Try to fetch messageID's of top 20 tipped messages (or until there are no more)
         for(let i = 0; i < 20; i++) {
             const message = await this.contract.topPosts(i).call();
@@ -36,14 +35,11 @@ const utils = {
             featured.push(
                 message.toNumber()
             );
-            alert(i);
         }
 
-        alert("ping");
         // Fetch Max(30) most recent messages
         const totalMessages = (await this.contract.current().call()).toNumber();
         const min = Math.max(1, totalMessages - 30);
-        alert("number");
 
         const messageIDs = [ ...new Set([
             ...new Array(totalMessages - min).fill().map((_, index) => min + index),
@@ -65,15 +61,19 @@ const utils = {
     },
 
     async fetchMessage(messageID, { recent = {}, featured = [] }) {
+        console.log("fetch 1");
         const message = await this.contract.messages(messageID).call();
+        console.log("fetch 2");
         const vulnerable = Object.keys(recent).filter(messageID => (
             !featured.includes(messageID)
         )).sort((a, b) => (
             recent[b].timestamp - recent[a].timestamp
         ));
 
+        console.log("fetch 3");
         recent[messageID] = this.transformMessage(message);
 
+        console.log("fetch 4");
         if(vulnerable.length > 30) {
             const removed = vulnerable.splice(0, vulnerable.length - 30);
 
@@ -82,6 +82,7 @@ const utils = {
             });
         }
 
+        console.log("fetch 5");
         return {
             message: recent[messageID],
             recent,

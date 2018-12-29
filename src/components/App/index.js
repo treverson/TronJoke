@@ -40,7 +40,19 @@ class App extends React.Component {
     }
 
     async componentDidMount() {
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        for (var i = 0; i < 1000; i++) {
+            if (!!window.tronWeb) {
+                break;
+            } else {
+                await sleep(10);
+            }
+        }
+
         await new Promise(resolve => {
+
             const tronWebState = {
                 installed: !!window.tronWeb,
                 loggedIn: window.tronWeb && window.tronWeb.ready
@@ -136,8 +148,7 @@ class App extends React.Component {
     }
 
     async fetchMessages() {
-      const messages = await Utils.fetchMessages();
-        alert(JSON.stringify(messages['recent']));
+        const messages = await Utils.fetchMessages();
         this.setState({
             messages: messages
         });
@@ -156,7 +167,7 @@ class App extends React.Component {
                 featured
             }
         });
-
+        
         return message;
     }
 
@@ -194,13 +205,12 @@ class App extends React.Component {
         });
 
         Utils.contract.postMessage(message).send({
-            shouldPollResponse: true,
             callValue: 10000000
         }).then(res => Swal({
-            title: 'Post Created',
+            title: '发送成功',
             type: 'success'
         })).catch(err => Swal({
-            title: 'Post Failed',
+            title: '发送失败',
             type: 'error'
         })).then(() => {
             this.setState({
@@ -371,7 +381,7 @@ class App extends React.Component {
             <strong>&nbsp;&nbsp;tronjoke.me</strong>
             </small>
           </p>
-          <p> Powered by ydapp.io </p>
+          <p> Powered by dappsoft.io </p>
         </div>
       </div>
     </footer>
