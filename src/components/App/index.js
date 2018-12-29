@@ -268,7 +268,7 @@ class App extends React.Component {
         return (
             <div className={ 'messageInput' + (this.state.currentMessage.loading ? ' loading' : '') }>
                 <textarea
-                    placeholder='给生活, 多一点快乐'
+                    placeholder='给生活多一点快乐'
                     value={ this.state.currentMessage.message }
                     onChange={ this.onMessageEdit }></textarea>
                 <div className='footerx'>
@@ -324,7 +324,7 @@ class App extends React.Component {
                     <p>
                         <strong>波场段子</strong> 是一个可以把你喜欢的段子发上来, 并获得打赏的网站。 今日补贴1000TRX。
                         <br/><br/>
-                        期待你的表演~
+                        给生活多一点快乐~
                     </p>
                 </div>
 
