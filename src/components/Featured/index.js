@@ -26,12 +26,8 @@ const Featured = props => {
     ));
 
     return (
-        <div className='featured'>
-            <Scrollbars style={{ height: 220, width: '100%' }} autoHide>
-                <div className='scrollable'>
-                    { messages }
-                </div>
-            </Scrollbars>            
+        <div className='messages'>
+          { messages }
         </div>
     );
 };

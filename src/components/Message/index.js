@@ -36,12 +36,13 @@ const Message = props => {
                         { message }
                     </div>
                 </Scrollbars>
-                <div className='footer'>
+                <div className='footer-message'>
                     <div className='timestamp'>
                         { moment(timestamp * 1000).fromNow() }
                     </div>
                     { tips.count ? <div className='tips'>
-                        <strong>{ (tips.amount / 1000000).toLocaleString() } TRX</strong> from { tips.count.toLocaleString() } tip{ tips.count === 1 ? '' : 's' }
+                      打赏总额
+                        <strong>{ (tips.amount / 1000000).toLocaleString() } TRX</strong> 
                     </div> : '' }
                 </div>
             </div>

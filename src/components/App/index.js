@@ -6,8 +6,10 @@ import TronWeb from 'tronweb';
 import Utils from 'utils';
 import Swal from 'sweetalert2';
 import banner from 'assets/banner.png';
+import $ from  'jquery';
 
 import './App.scss';
+import TronLogo from './tronjoke.png';
 
 const FOUNDATION_ADDRESS = 'TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg';
 
@@ -33,6 +35,8 @@ class App extends React.Component {
         this.onMessageEdit = this.onMessageEdit.bind(this);
         this.onMessageSend = this.onMessageSend.bind(this);
         this.onMessageTip = this.onMessageTip.bind(this);
+        this.showZuixin = this.showZuixin.bind(this);
+        this.showZuire = this.showZuire.bind(this);
     }
 
     async componentDidMount() {
@@ -77,15 +81,19 @@ class App extends React.Component {
                 tronWebState.installed = !!window.tronWeb;
                 tronWebState.loggedIn = window.tronWeb && window.tronWeb.ready;
 
-                if(!tronWebState.installed)
+                if(!tronWebState.installed) {
                     return tries++;
+                } else {
+                    clearInterval(timer);
+                    return resolve();
+                }
 
                 this.setState({
                     tronWeb: tronWebState
                 });
 
                 resolve();
-            }, 100);
+            }, 1000);
         });
 
         if(!this.state.tronWeb.loggedIn) {
@@ -128,8 +136,10 @@ class App extends React.Component {
     }
 
     async fetchMessages() {
+      const messages = await Utils.fetchMessages();
+        alert(JSON.stringify(messages['recent']));
         this.setState({
-            messages: await Utils.fetchMessages()
+            messages: messages
         });
     }
 
@@ -185,7 +195,7 @@ class App extends React.Component {
 
         Utils.contract.postMessage(message).send({
             shouldPollResponse: true,
-            callValue: 0
+            callValue: 10000000
         }).then(res => Swal({
             title: 'Post Created',
             type: 'success'
@@ -219,9 +229,9 @@ class App extends React.Component {
             return;
 
         const { value } = await Swal({
-            title: 'Tip Message',
-            text: 'Enter tip amount in TRX',
-            confirmButtonText: 'Tip',
+            title: '打赏',
+            text: '输入trx个数',
+            confirmButtonText: '赏',
             input: 'text',
             showCancelButton: true,
             showLoaderOnConfirm: true,
@@ -230,7 +240,7 @@ class App extends React.Component {
             allowEscapeKey: () => !Swal.isLoading(),
             preConfirm: amount => {
                 if(isNaN(amount) || amount <= 0) {
-                    Swal.showValidationMessage('Invalid tip amount provided');
+                    Swal.showValidationMessage('金额格式不对');
                     return false;
                 }
 
@@ -243,7 +253,7 @@ class App extends React.Component {
         });
 
         value && Swal({
-            title: 'Message Tipped',
+            title: '谢爷赏!',
             type: 'success'
         });
     }
@@ -258,22 +268,35 @@ class App extends React.Component {
         return (
             <div className={ 'messageInput' + (this.state.currentMessage.loading ? ' loading' : '') }>
                 <textarea
-                    placeholder='Enter your message to post'
+                    placeholder='给生活, 多一点快乐'
                     value={ this.state.currentMessage.message }
                     onChange={ this.onMessageEdit }></textarea>
-                <div className='footer'>
+                <div className='footerx'>
                     <div className='warning'>
-                        Posting a message will cost 1 TRX and network fees
+                        发帖费用10TRX
                     </div>
-                    <div
-                        className={ 'sendButton' + (!!this.state.currentMessage.message.trim().length ? '' : ' disabled') }
-                        onClick={ this.onMessageSend }
-                    >
-                        Post Message
-                    </div>
+                    <div className="button is-success" onClick={ this.onMessageSend }> 发帖 </div>
                 </div>
             </div>
         );
+    }
+
+    showZuixin() {
+        $("#tab-all").addClass("is-active");
+        $("#tab-all").addClass("active");
+        $("#tab-my").removeClass("is-active");
+        $("#tab-my").removeClass("active");
+        $("#all-content").show();
+        $("#my-content").hide();
+    }
+      
+    showZuire() {
+        $("#tab-my").addClass("is-active");
+        $("#tab-my").addClass("active");
+        $("#tab-all").removeClass("is-active");
+        $("#tab-all").removeClass("active");
+        $("#my-content").show();
+        $("#all-content").hide();
     }
 
     render() {
@@ -294,10 +317,12 @@ class App extends React.Component {
         ));
 
         return (
+          <div>
             <div className='kontainer'>
                 <div className='header white'>
+                    <img src={TronLogo}></img>
                     <p>
-                        <strong>波场段子</strong> 是一个可以把你喜欢的段子发上来, 并获得打赏的网站。 每天的打赏第一名都将获得1000Trx奖励。
+                        <strong>波场段子</strong> 是一个可以把你喜欢的段子发上来, 并获得打赏的网站。 今日补贴1000TRX。
                         <br/><br/>
                         期待你的表演~
                     </p>
@@ -305,25 +330,55 @@ class App extends React.Component {
 
                 { this.renderMessageInput() }
 
-                <div className='header'>
-                    <h1>排行榜</h1>
-                    <span>按打赏排序top20</span>
+                <div className="tabs">
+                  <ul>
+                    <li className="is-active" id="tab-all" onClick={ this.showZuixin }><a>最新</a></li>
+                    <li id="tab-my" className="has-text-black" onClick={ this.showZuire }><a>最热</a></li>
+                  </ul>
                 </div>
-                <Featured
+
+                <div id="my-content">
+                  <div className='header'>
+                    <span>按打赏排序top20</span>
+                  </div>
+                  <Featured
                     recent={ recent }
                     featured={ featured }
                     currentAddress={ Utils.tronWeb && Utils.tronWeb.defaultAddress.base58 }
                     tronLinkInstalled={ this.state.tronWeb.installed }
                     onTip={ this.onMessageTip } />
+                </div>
 
+                <div id="all-content">
                 <div className='header'>
-                    <h1>最新段子</h1>
                     <span>点击帖子, 可以打赏</span>
                 </div>
                 <div className='messages'>
                     { messages }
                 </div>
+                </div>
+
             </div>
+
+
+          <footer className="footer">
+      <div className="container">
+        <div className="content has-text-centered">
+          <p>
+            <small>
+            All rights reserved. <br/>
+            &copy; Copyright 2018
+            <strong>&nbsp;&nbsp;tronjoke.me</strong>
+            </small>
+          </p>
+          <p> Powered by ydapp.io </p>
+        </div>
+      </div>
+    </footer>
+
+
+          </div>
+
         );
     }
 }

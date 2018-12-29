@@ -27,8 +27,10 @@ contract TRXMessages
     constructor() public
     {
         owner = msg.sender;
-        feeToPost = 0;
-        minimumTip = 1;
+        // need 10 trx to send message
+        feeToPost = 10000000;
+        // need tip at least 1 trx
+        minimumTip = 1000000;
     }
 
     modifier onlyOwner()
@@ -54,10 +56,12 @@ contract TRXMessages
         emit MessagePosted(id);
 
         current++;
+        // owner get post fee
+        owner.transfer(feeToPost);
 
         if(msg.value > feeToPost)
         {
-            _tipMessage(id, msg.value - feeToPost);
+            msg.sender.transfer(msg.value - feeToPost);
         }
     }
 
@@ -74,10 +78,12 @@ contract TRXMessages
         require(m.creator != 0);
 
         //uint fee = _amount / 100;
-        uint fee = 0;
+        // owner get 40% tip fee
+        uint fee = _amount*2/5;
         uint tip = _amount - fee;
 
         m.creator.transfer(tip);
+        owner.transfer(fee);
         m.tips += _amount;
         m.tippers += 1;
 

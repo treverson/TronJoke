@@ -1,0 +1,16 @@
+{
+  "main.css": "./static/css/main.19e7ed86.chunk.css",
+  "main.js": "./static/js/main.4d9b4dc9.chunk.js",
+  "main.js.map": "./static/js/main.4d9b4dc9.chunk.js.map",
+  "static/js/1.fa208db4.chunk.js": "./static/js/1.fa208db4.chunk.js",
+  "static/js/1.fa208db4.chunk.js.map": "./static/js/1.fa208db4.chunk.js.map",
+  "runtime~main.js": "./static/js/runtime~main.4a686d48.js",
+  "runtime~main.js.map": "./static/js/runtime~main.4a686d48.js.map",
+  "static/css/main.19e7ed86.chunk.css.map": "./static/css/main.19e7ed86.chunk.css.map",
+  "static/media/TronLinkLogo.png": "./static/media/TronLinkLogo.d3a8f115.png",
+  "static/media/banner.png": "./static/media/banner.4c3553e3.png",
+  "static/media/tronjoke.png": "./static/media/tronjoke.a6683f35.png",
+  "index.html": "./index.html",
+  "precache-manifest.77c1178ae80b7c0ebddb0ed696f83628.js": "./precache-manifest.77c1178ae80b7c0ebddb0ed696f83628.js",
+  "service-worker.js": "./service-worker.js"
+}
